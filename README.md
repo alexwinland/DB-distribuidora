@@ -1,99 +1,132 @@
 # Sistema de Gestão de Produtos e Funcionários
 
-Este repositório contém um conjunto de scripts SQL para a criação e manipulação de um banco de dados para uma empresa. O sistema gerencia informações sobre produtos, funcionários, cargos, fabricantes, notas fiscais e outros dados relacionados ao estoque e vendas.
+Este repositório contém a estrutura de um banco de dados para gerenciar um sistema de vendas, incluindo informações sobre produtos, funcionários, cargos, fabricantes, transportadoras, e notas fiscais. O banco de dados é composto por várias tabelas inter-relacionadas, com dados sobre os itens vendidos, seus fornecedores e os funcionários responsáveis pelas transações.
 
 <img src="imagem/ER.png">
 
 ## Estrutura do Banco de Dados
 
-O banco de dados é composto por diversas tabelas relacionadas, conforme descrito abaixo:
+O banco de dados é composto por 8 tabelas principais:
 
-### Tabelas Principais
+### 1. **Cargo**
+Tabela que armazena informações sobre os cargos dos funcionários.
 
-- **cargo**: Armazena os cargos dos funcionários (ex: Atendente de Caixa, Gerente de Caixa).
-- **fabricante**: Contém informações sobre os fabricantes de produtos (ex: Nestlé, Melitta).
-- **funcionario**: Guarda dados sobre os funcionários, como nome, cargo e ano de contratação.
-- **produto**: Armazena os produtos disponíveis para venda, incluindo informações como preço, quantidade em estoque e o fabricante.
-- **nota_fiscal**: Contém dados sobre as notas fiscais emitidas, incluindo o transporte e os funcionários responsáveis.
-- **item_nota**: Relaciona os itens que compõem cada nota fiscal, incluindo o produto, a quantidade e o preço.
-- **tipo_produto**: Define os tipos de produtos (ex: alimentos, bebidas, eletrodomésticos).
+| Coluna           | Tipo de Dados      | Descrição                        |
+|------------------|--------------------|----------------------------------|
+| `cod_cargo`      | integer            | Código único do cargo            |
+| `nome`           | varchar            | Nome do cargo                    |
+| `salario_base`   | numeric            | Salário base do cargo            |
 
-### Funcionalidades
+### 2. **Fabricante**
+Tabela que armazena informações sobre os fabricantes dos produtos.
 
-O código SQL oferece funcionalidades de:
+| Coluna           | Tipo de Dados      | Descrição                        |
+|------------------|--------------------|----------------------------------|
+| `cod_fabricante` | integer            | Código único do fabricante       |
+| `nome`           | varchar            | Nome do fabricante               |
+| `cidade`         | varchar            | Cidade do fabricante             |
+| `telefone`       | varchar            | Telefone de contato do fabricante|
 
-1. **Gestão de Funcionários**:
-   - Adicionar novos funcionários, com suas informações de cargo e data de contratação.
-   - Visualizar os cargos disponíveis na empresa.
-   - Atribuir funcionários aos cargos de forma eficiente.
+### 3. **Funcionário**
+Tabela que armazena informações sobre os funcionários da empresa.
 
-2. **Gestão de Produtos**:
-   - Inserir novos produtos no banco de dados, especificando tipo, fabricante, preço e quantidade disponível.
-   - Atualizar informações de produtos, como preço e quantidade em estoque.
-   - Consultar produtos por tipo e fabricante.
+| Coluna            | Tipo de Dados      | Descrição                          |
+|-------------------|--------------------|------------------------------------|
+| `cod_funcionario` | integer            | Código único do funcionário        |
+| `cod_cargo`       | integer            | Código do cargo do funcionário     |
+| `nome`            | varchar            | Nome do funcionário                |
+| `cidade`          | varchar            | Cidade do funcionário              |
+| `ano_contratacao` | integer            | Ano de contratação do funcionário  |
 
-3. **Gestão de Notas Fiscais**:
-   - Registrar as notas fiscais emitidas, com informações sobre transporte, funcionários e valor do frete.
-   - Associar itens a uma nota fiscal, incluindo a quantidade e preço dos produtos vendidos.
+### 4. **Item Nota**
+Tabela que detalha os itens que foram vendidos em cada nota fiscal.
 
-4. **Gestão de Cargos e Fabricantes**:
-   - Inserir e gerenciar cargos para os funcionários.
-   - Gerenciar os fabricantes de produtos, incluindo nome, cidade e telefone.
+| Coluna             | Tipo de Dados      | Descrição                        |
+|--------------------|--------------------|----------------------------------|
+| `cod_nota_fiscal`  | integer            | Código único da nota fiscal      |
+| `cod_produto`      | integer            | Código do produto                |
+| `quantidade`       | integer            | Quantidade de produtos vendidos |
+| `valor`            | numeric            | Valor total do item              |
 
-### Scripts SQL
+### 5. **Nota Fiscal**
+Tabela que armazena informações sobre as notas fiscais emitidas.
 
-Os scripts SQL no repositório são divididos em várias partes:
+| Coluna             | Tipo de Dados      | Descrição                        |
+|--------------------|--------------------|----------------------------------|
+| `cod_nota_fiscal`  | integer            | Código único da nota fiscal      |
+| `cod_transportadora` | integer           | Código da transportadora         |
+| `cod_funcionario`  | integer            | Código do funcionário responsável|
+| `valor_frete`      | numeric            | Valor do frete                   |
 
-1. **Inserção de Dados**:
-   - Scripts que inserem dados nas tabelas, como cargos, produtos, funcionários, fabricantes e notas fiscais.
-   - Esses dados são exemplos e podem ser adaptados conforme necessário.
+### 6. **Produto**
+Tabela que armazena informações sobre os produtos vendidos.
 
-2. **Consultas**:
-   - Consultas para verificar o status do estoque, verificar notas fiscais emitidas, e gerar relatórios sobre produtos e funcionários.
+| Coluna             | Tipo de Dados      | Descrição                        |
+|--------------------|--------------------|----------------------------------|
+| `cod_produto`      | integer            | Código único do produto          |
+| `cod_tipo_produto` | integer            | Tipo do produto                  |
+| `cod_fabricante`   | integer            | Código do fabricante             |
+| `nome`             | varchar            | Nome do produto                  |
+| `peso`             | varchar            | Peso do produto                  |
+| `medida`           | varchar            | Medida usada para o produto      |
+| `preco`            | numeric            | Preço do produto                 |
+| `qtde_estoque`     | integer            | Quantidade em estoque            |
 
-3. **Relacionamentos entre Tabelas**:
-   - As tabelas estão interligadas por chaves estrangeiras. Por exemplo, a tabela `funcionario` faz referência à tabela `cargo`, e a tabela `item_nota` se relaciona com `nota_fiscal` e `produto`.
+### 7. **Tipo Produto**
+Tabela que classifica os produtos em tipos, como alimentos, eletrônicos, etc.
 
-### Como Usar
+| Coluna             | Tipo de Dados      | Descrição                        |
+|--------------------|--------------------|----------------------------------|
+| `cod_tipo_produto` | integer            | Código do tipo de produto        |
+| `nome`             | varchar            | Nome do tipo de produto          |
 
-Para utilizar o banco de dados:
+### 8. **Transportadora**
+Tabela que armazena informações sobre as transportadoras.
 
-1. **Configuração Inicial**:
-   - Execute os scripts de criação das tabelas (caso não estejam criadas no banco de dados).
-   - Em seguida, execute os scripts de inserção de dados para preencher as tabelas com dados de exemplo.
+| Coluna            | Tipo de Dados      | Descrição                        |
+|-------------------|--------------------|----------------------------------|
+| `cod_transportadora` | integer          | Código da transportadora         |
+| `nome`            | varchar            | Nome da transportadora           |
 
-2. **Consultas e Operações**:
-   - Você pode executar consultas SQL para interagir com os dados, como:
-     - Visualizar todos os produtos em estoque.
-     - Verificar os funcionários contratados em um determinado ano.
-     - Obter a lista de fabricantes e seus produtos.
+## Relacionamentos Entre Tabelas
 
-3. **Exemplo de Uso**:
-   - Para visualizar todos os produtos de um fabricante específico, execute a seguinte consulta:
+As tabelas estão interligadas através de chaves primárias e estrangeiras. Alguns exemplos de relações importantes:
 
-     ```sql
-     SELECT nome, preco, qtde_estoque FROM produto WHERE cod_fabricante = 1;
-     ```
+- **Funcionario -> Cargo**: Cada funcionário tem um cargo, definido pela chave estrangeira `cod_cargo` na tabela `funcionario`.
+- **Produto -> Tipo Produto**: Cada produto é classificado por um tipo, indicado pela chave estrangeira `cod_tipo_produto` na tabela `produto`.
+- **Produto -> Fabricante**: Cada produto tem um fabricante, indicado pela chave estrangeira `cod_fabricante` na tabela `produto`.
+- **Nota Fiscal -> Funcionário**: Cada nota fiscal é associada a um funcionário que a emitiu, através da chave estrangeira `cod_funcionario` na tabela `nota_fiscal`.
+- **Nota Fiscal -> Transportadora**: Cada nota fiscal tem uma transportadora associada, através da chave estrangeira `cod_transportadora` na tabela `nota_fiscal`.
 
-4. **Dependências**:
-   - Este sistema foi desenvolvido para ser usado em um banco de dados relacional como o MySQL ou PostgreSQL. Certifique-se de ter um ambiente de banco de dados configurado antes de rodar os scripts.
+## Exemplos de Consultas
 
-### Exemplo de Execução
+Aqui estão alguns exemplos de como consultar dados dentro desse banco de dados:
 
-A seguir, um exemplo de como os dados são inseridos nas tabelas:
+1. **Obter todos os produtos de um fabricante específico:**
 
 ```sql
--- Inserção de cargos
-INSERT INTO cargo (cod_cargo, nome, salario_base) VALUES (1, 'Atendente de Caixa', 600);
-INSERT INTO cargo (cod_cargo, nome, salario_base) VALUES (2, 'Gerente de Caixa', 1000);
+SELECT nome, preco
+FROM produto
+WHERE cod_fabricante = 1;  -- Substitua pelo código do fabricante desejado
+```
 
--- Inserção de fabricantes
-INSERT INTO fabricante (cod_fabricante, nome, cidade, telefone) VALUES (1, 'Nestlé', 'Feira de Santana', '3424-9342');
+2. **Verificar os funcionários contratados em um ano específico:**
 
--- Inserção de produtos
-INSERT INTO produto (cod_produto, cod_tipo_produto, cod_fabricante, nome, peso, medida, preco, qtde_estoque) 
-VALUES (1, 1, 6, 'Chickenitos', '250', 'grama', 2.50, 20);
+```sql
+SELECT nome, cargo, ano_contratacao
+FROM funcionario
+WHERE ano_contratacao = 2005;  -- Substitua pelo ano desejado
+```
 
--- Inserção de funcionários
-INSERT INTO funcionario (cod_funcionario, cod_cargo, nome, cidade, ano_contratacao) 
-VALUES (1, 2, 'Benjamin da Silva', 'Penha', 1999);
+3. **Consultar o total de vendas por nota fiscal:**
+
+```sql
+SELECT nf.cod_nota_fiscal, SUM(inf.quantidade * inf.valor) AS total_venda
+FROM nota_fiscal nf
+JOIN item_nota inf ON nf.cod_nota_fiscal = inf.cod_nota_fiscal
+GROUP BY nf.cod_nota_fiscal;
+```
+
+## Considerações
+
+Este banco de dados foi projetado para gerenciar uma pequena empresa de vendas, que inclui produtos, notas fiscais, fabricantes, e funcionários. Ele pode ser expandido ou modificado para atender a outros requisitos específicos de negócios.
