@@ -2,6 +2,8 @@
 
 Este repositório contém um conjunto de scripts SQL para a criação e manipulação de um banco de dados para uma empresa. O sistema gerencia informações sobre produtos, funcionários, cargos, fabricantes, notas fiscais e outros dados relacionados ao estoque e vendas.
 
+<img src="imagem/ER.png">
+
 ## Estrutura do Banco de Dados
 
 O banco de dados é composto por diversas tabelas relacionadas, conforme descrito abaixo:
